@@ -10,7 +10,7 @@ class Products:
 
     
 
-    allProduct=np.empty()
+    allProduct=[]
     # daySale=np.empty()
 
     def generateBulkProduct(self,name,totalCost,quantity):
@@ -25,10 +25,19 @@ class Products:
     
     def addProduct(self,name,cost,revenue,x):
         p=self.Product(name,cost,revenue,x)
+        self.allProduct.append(p)
         
     def perProductRevenue(self):
         pass
     
 
     def perProductCost(self):
+        pass
+
+    def copyProduct(self,p2):
+        for i in p2.allProduct:
+            self.addProduct(i.name,i.cost,i.revenue,i.x)
+
+
+    def productManagement(self):
         pass

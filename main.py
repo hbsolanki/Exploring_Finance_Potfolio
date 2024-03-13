@@ -14,32 +14,34 @@ class Main:
         d={"id":id,"password":password}
 
     def mainFunc(self):
-        type=input("(1)Owner \n(2)Manager \n")
+        type=None
         print()
 
-        if type=="1":
-            password=input("Enter Password : ")
-            if self.ownerPass==password:
-                self.owner()
-            else:
-                print("Wrong password Try Again...")
-        elif type=="2":
-            id=int(input("Enter Bussiness id : "))
-            for i in self.managers:
-                if i["id"]==id:
-                    password=input("Enter Password : ")
-                    if i["password"]==password:
-                        self.manage(i["id"])
-                        return
-                    else:
-                        print("Wrong password Try Again...")
-                        break
-            else:
-                print("This ID NOT VALID")
+        while type!="3":
+            type=input("(1)Owner \n(2)Manager \n(3)Exit \n")
+            if type=="1":
+                password=input("Enter Password : ")
+                if self.ownerPass==password:
+                    self.owner()
+                else:
+                    print("Wrong password Try Again...")
+            elif type=="2":
+                id=int(input("Enter Bussiness id : "))
+                for i in self.managers:
+                    if i["id"]==id:
+                        password=input("Enter Password : ")
+                        if i["password"]==password:
+                            self.manage(i["id"])
+                            return
+                        else:
+                            print("Wrong password Try Again...")
+                            break
+                else:
+                    print("This ID NOT VALID")
             
 
     def owner(self):
-        choice=input("(1)Analysis Business (2)Create Business")
+        choice=input("(1)Analysis Business (2)Create Business : ")
         if choice=="1":
             print()
             for i in self.allBusiness:
@@ -49,9 +51,15 @@ class Main:
             for i in self.allBusiness:
                 if idForANA==i.id:
                     i.main()
+                    return
+            else:
+                print("INVALID Business ID")
         elif choice=="2":
             #Creating New Business and ADD All Business 
             pass
+        else:
+            print("INVALID Option")
+            self.owner()
             
             
 
@@ -59,5 +67,8 @@ class Main:
         bid.manager()
 
 
+    def newBusinessCreateAnalysis(self):
+        for i in self.allBusiness:
+            pass
 
 Main("hb").mainFunc()

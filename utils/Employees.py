@@ -28,6 +28,14 @@ class Employees:
         # print("Eid  Name  designation   salary   Details")
         for i in self.employeesDetails:
             print(i.eid,i.name,i.designation,i.salary,i.x)
+
+    def copyEmployee(self,e2):
+        for i in e2.employeesDetails:
+            self.addEmployee(i.eid,i.name,i.designation,i.salary,i.x)
+
+    
+    def employeeManagement(self):
+        pass
             
 
 ee=Employees()
