@@ -38,6 +38,10 @@ class Employees:
         choice=None
         while choice !="4":
             choice=input("(1)Add Employee \n(2)Remove Employee \n(3)Increment All Employee Salary \n(4)Increment Salary Particular Employee \n(5)View All Employee Details \n(6)View Particular Employee Details \n(7)Exit \n")
+
+            if (choice in ["2","3","4","5","6"]) and (not self.employeesDetails):
+                print("Employee List Is Empty")
+                continue
             
             if choice=="1":
                 eid=int(input("Enter Employee ID : "))
@@ -47,6 +51,7 @@ class Employees:
                 salary=int(input("Enter Salary Of Employee : "))
                 x=input("Enter Other Description Of Employee : ")
                 self.addEmployee(eid,name,designation,salary,x)
+                print("Employee Sucessfuly Added")
 
             elif choice=="2":
                 eid=int(input("Enter Employee ID : "))
@@ -70,7 +75,7 @@ class Employees:
                     if i.eid==eid:
                         i.salary+=incrementSalary
                         print("Employee's Successfuly Salary Incremented...")
-                        break
+                        
                 else:
                     print("This Employee ID Not Found...")
             elif choice=="5":
@@ -80,7 +85,7 @@ class Employees:
                 for i in self.employeesDetails:
                     if i.eid==eid:
                         print(i.eid,i.name,i.designation,i.salary,i.x)
-                        break
+                        
                 else:
                     print("This Employee ID Not Found...")
             elif choice=="7":
@@ -89,10 +94,4 @@ class Employees:
                 print("Invalid Option")
             
 
-# ee=Employees()
-# ee.addEmployee(1,"hb","H",20000,"SomeDetails")
-
-# ee.addEmployee(2,"db","H",20000,"SomeDetails")
-# print(ee.totalEmployee())
-# print(ee.printAllEmployeeDatails())
-# print(ee.allEmployeeSalaryTotal())
+# ee=Employees().employeeManagement()

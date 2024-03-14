@@ -50,15 +50,21 @@ class Products:
         while choice !="4":
             choice=input("(1)Add Product \n(2)Remove Product \n(3)Increment All Product Price \n(4)Increment Price Particular Product \n(5)View All Product Details \n(6)View Particular Product Details \n(7)Exit \n")
             
+            if (choice in ["2","3","4","5","6"]) and (not self.allProduct):
+                print("Product List Is Empty")
+                continue
+
+
             if choice=="1":
 
                 pid=int(input("Enter Product ID : "))
                 #,pid,name,cost,revenue,x
                 name=input("Enter Name Of Product : ")
-                cost=input("Enter Cost Of Product : ")
+                cost=int(input("Enter Cost Of Product : "))
                 revenue=int(input("Enter product Revenue : "))
                 x=input("Enter Other Description Of Product : ")
                 self.addProduct(pid,name,cost,revenue,x)
+                print("Product Sucessfuly Added... ")
 
             elif choice=="2":
                 pid=int(input("Enter Product ID : "))
@@ -71,6 +77,7 @@ class Products:
                     print("This Product ID Not Found...")
             elif choice=="3":
                 incrementPrice=int(input("Enter Increment Price : "))
+                
                 for i in self.allProduct:
                     i.cost+=incrementPrice
                 else:
@@ -82,17 +89,17 @@ class Products:
                     if i.pid==pid:
                         i.cost+=incrementPrice
                         print("Product Price Incremented...")
-                        break
+                        
                 else:
                     print("This Product ID Not Found...")
             elif choice=="5":
                 self.printAllProductDatails()
             elif choice=="6":
-                eid=int(input("Enter Product ID : "))
-                for i in self.employeesDetails:
+                pid=int(input("Enter Product ID : "))
+                for i in self.allProduct:
                     if i.pid==pid:
                         print(i.pid,i.name,i.cost,i.revenue,i.x)
-                        break
+                        
                 else:
                     print("This Product ID Not Found...")
             elif choice=="7":
@@ -100,3 +107,5 @@ class Products:
             else:
                 print("Invalid Option")
             
+# p=Products()
+# p.productManagement()

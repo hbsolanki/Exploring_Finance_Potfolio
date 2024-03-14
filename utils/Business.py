@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from utils.EmployeeManage import Employees 
 # import Marketing
 from utils.ProductManage import Products
@@ -7,8 +7,10 @@ from utils.SalesManage import Sales
 # import ShareMarket
 from utils.MonthDetails import Month
 
+
 class Business:
-    def __init__(self,bid,name):
+    def __init__(self,password,bid,name):
+        self.password=password
         self.bid=bid
         self.name=name
         self.debt={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
@@ -54,14 +56,15 @@ class Business:
 
             employeesObj=Employees()
             employeesObj.copyEmployee(self.employee)
-            productObj=Product()
+            productObj=Products()
             productObj.copyProduct(self.product)
             shareMarket=None
-            EBITA=netProfit+totalTaxes+debt+depreciation
+            EBITDA=netProfit+totalTaxes+debt+depreciation
 
-            m=Month(revenue,debt,haveEquity,EBITA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employeesObj,productObj,saleObj,shareMarket)
+            m=Month(revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employeesObj,productObj,saleObj,shareMarket)
 
             self.storeDetails(m)
+
             
         elif choice=="2":
             self.employee.employeeManagement()
@@ -140,7 +143,7 @@ class Business:
         logistics=0
         if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
             logistics=self.debt["amount"]//self.debt["Total_EMI"]
-        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITA*100)/revenue]
+        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITDA*100)/revenue]
         color=['r','y','g','b','v']
         plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
         plt.legend()
@@ -157,7 +160,8 @@ class Business:
         pass
     
 
-    def pieChart(self,activities,slices,color):
-        plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
-        plt.legend()
-        plt.show()
+    # def pieChart(self,activities,slices,color):
+    #     plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+    #     plt.legend()
+    #     plt.show()
+
