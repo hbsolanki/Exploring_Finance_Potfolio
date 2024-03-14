@@ -1,43 +1,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import Employees 
-import Marketing
-import Product
-import Sales
-import ShareMarket
+from utils.EmployeeManage import Employees 
+# import Marketing
+from utils.ProductManage import Products
+from utils.SalesManage import Sales
+# import ShareMarket
 from utils.MonthDetails import Month
 
 class Business:
     def __init__(self,bid,name):
         self.bid=bid
         self.name=name
-        self.currentYearMonths=[]
-        self.years=[]
         self.debt={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
         self.haveEquity=None
-        # self.EBITA=None
-        self.annualRevenueRunRate=None
         self.assets=None
-        # self.marketing=None
-        # self.employees=Employees()
-        self.product=Product()
+        self.currentYearMonths=[]
+        self.years=[]
+        self.profit=None
+        self.annualRevenueRunRate=None
+        self.currentYearRevenue=None
+        
+        self.product=Products()
         self.employee=Employees()
-        # self.sales=Sales()
-        # self.shareMarket=ShareMarket()
 
-    class Marketing:
-        pass
 
     def manager(self):
-        
-        
         choice=None
         print("For Management Enter Number : ")
         print("(1)Add Month Details \n(2)Employee \n(3)Product \n(4)Exit")
         choice=input()
         if choice=="1":
             saleObj=Sales()
-            # self.
             revenue=saleObj.saleInput(self.product)
             COGS=saleObj.COGS
             grossProfit=revenue-COGS
@@ -45,8 +38,9 @@ class Business:
             debt=self.debt
             haveEquity=self.haveEquity
             assets=self.assets
+
             print()
-            # marketingASK=input({"Are You "})
+
             marketing=int(input("Enter Marketing Cost : "))
             depreciation=int(input("Enter Depreciation Cost : "))
             other=int(input("Enter Other Cost : "))
@@ -55,14 +49,15 @@ class Business:
             IncomeBeforeTaxes=afterEMIProfit-marketing-depreciation-afterEMIProfit-other
             totalTaxes=self.taxCalculation(IncomeBeforeTaxes)  #corporate Tax  30% <1cr || 1<Pro>10 37% || >10cr 42%
             netProfit=IncomeBeforeTaxes-totalTaxes
+
+            self.profit=(netProfit*self.haveEquity)/100
+
             employeesObj=Employees()
             employeesObj.copyEmployee(self.employee)
             productObj=Product()
             productObj.copyProduct(self.product)
-            # sales=None
             shareMarket=None
             EBITA=netProfit+totalTaxes+debt+depreciation
-    # def __init__(self,revenue,debt,haveEquity,EBITA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employees,product,sales,shareMarket):
 
             m=Month(revenue,debt,haveEquity,EBITA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employeesObj,productObj,saleObj,shareMarket)
 
@@ -78,9 +73,14 @@ class Business:
 
     def storeDetails(self,m):
         self.currentYearMonths.append(m)
+
         if len(self.currentYearMonths)==12:
             self.years.append(self.currentYearMonths)
             self.currentYearMonths.clear()
+        else:
+            self.currentYearRevenue+=m.revenue
+            self.annualRevenueRunRate=((self.currentYearRevenue/len(self.currentYearMonths))*12)
+        
 
 
 
@@ -107,13 +107,45 @@ class Business:
         return (IncomeBeforeTaxes*30)/100
 
     def main(self):
-        pass
+        choice=None
+        while choice!="3":
+            choice=input("(1)View Chart For Analysis (2)View Table For Analysis (3)Generate Finance Matrix PDF (4)Change Some IMPORTANT Term (5)Exit")
+            
+            if choice=="1":
+                pass
+            elif choice=="2":
+                pass
+            elif choice=="3":
+                pass
+            elif choice=="4":
+                pass
+            elif choice=="5":
+                break
+            else:
+                print("Invalid Option")
 
     def generateAllDetailsFile(self):
         pass
 
     def chartsUnitEconomicsForLastMonth(self):
-        pass
+        
+        if self.currentYearMonths:
+            m=self.currentYearMonths[len(self.currentYearMonths)-1]
+
+        else:
+            m=self.years[len(self.years)-1][11]
+        activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
+        revenue=m.revenue
+        # self.debt={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
+        logistics=0
+        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            logistics=self.debt["amount"]//self.debt["Total_EMI"]
+        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITA*100)/revenue]
+        color=['r','y','g','b','v']
+        plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+        plt.legend()
+        plt.show()
+
 
     def chartsUnitEconomicsForAllMonth(self):
         pass
@@ -124,3 +156,8 @@ class Business:
     def chartsUnitEconomicsForAllYear(self):
         pass
     
+
+    def pieChart(self,activities,slices,color):
+        plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+        plt.legend()
+        plt.show()

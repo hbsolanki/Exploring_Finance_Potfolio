@@ -1,5 +1,5 @@
 import numpy as np
-import Product as pdct
+import utils.ProductManage as pdct
 
 class Sales:
 
@@ -24,7 +24,7 @@ class Sales:
             noOfProductSale=int(input("Enter "+i.name+" quantity sale : "))
             listOfProductsSale.append(Sales(i.name,i.cost,i.revenue,noOfProductSale))
             self.totalRevenue+=(noOfProductSale*i.revenue)
-            self.COGS+=(noOfProductSale*i.cost)
+            self.COGS+=(noOfProductSale*(i.cost-i.revenue))
 
         return self.totalRevenue
         

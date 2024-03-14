@@ -1,4 +1,5 @@
 #1.some 2.sharemarket 3.marketing 4.product 5.employee
+from utils.Business import Business
 
 class Main:
 
@@ -47,16 +48,19 @@ class Main:
             for i in self.allBusiness:
                 print(i.bid,i.name)
             print()
-            idForANA=int(input("Enter Business ID For Analysis : "))
-            for i in self.allBusiness:
-                if idForANA==i.id:
-                    i.main()
-                    return
-            else:
-                print("INVALID Business ID")
+            try:
+                idForANA=int(input("Enter Business ID For Analysis : "))
+                for i in self.allBusiness:
+                    if idForANA==i.id:
+                        i.main()
+                        return
+                else:
+                    print("INVALID Business ID")
+            except:
+                print("Error Occure")
         elif choice=="2":
             #Creating New Business and ADD All Business 
-            pass
+            self.newBusinessCreateAnalysis()
         else:
             print("INVALID Option")
             self.owner()
@@ -68,7 +72,53 @@ class Main:
 
 
     def newBusinessCreateAnalysis(self):
+        totalProfit=0
+        totalDebt=0
         for i in self.allBusiness:
-            pass
+            totalProfit+=i.profit
+            totalDebt+=((i.debt["amount"]/i.debt["Total_EMI"])*(i.debt["Total_EMI"]-i.debt["paidedEMI"]))
+
+        print("** From All Business Total Profit :",totalProfit,"₹")
+        print("** From All Business Debt Profit :",totalDebt,"₹")
+
+        print("(1)Create New Business (else)Exit")
+        choice=input()
+
+        if choice=="1":
+            #bid,name,debt,haveEquity,assets
+            try:
+                bid=int(input("Enter Business ID : "))
+                name=input("Enter Business Name : ")
+                haveEquity=int(input("You Have Equity : "))
+                assets=int(input("Enter Cost Of Assets : "))
+                b=Business(bid,name)
+                b.haveEquity=haveEquity
+                b.assets=assets
+                ch=input("(1)Take Debt (2)Not Take Debt ")
+                if ch=="1":
+                    print("->Debt Details  ")
+                    amount=int(input("Enter Amount : "))
+                    chemi=input("(1)Converted Into EMI (2)Not Converted Into EMI")
+                    if chemi=="1":
+                        Total_EMI=int(input("Enter Total EMI Month : "))
+                        b.debt["amount"]=amount
+                        b.debt["Total_EMI"]=Total_EMI
+                    else:
+                        
+                        persentage=int(input("Enter Persentage Of Debt : "))
+                        b.debt["persentage"]=persentage
+                    
+                
+                self.allBusiness.append(b)
+
+            except:
+                print("Some Error Occur")
+            
+        else:
+            return
+
+        
+        
+        
 
 Main("hb").mainFunc()

@@ -1,11 +1,9 @@
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 
-import Employees 
-import Marketing
-import Product
-import Sales
-import ShareMarket
+import utils.EmployeeManage as EmployeeManage 
+import utils.ProductManage as ProductManage
+import utils.SalesManage as SalesManage
 
 
 
