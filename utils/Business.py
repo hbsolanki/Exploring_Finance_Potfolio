@@ -4,7 +4,6 @@ from utils.ProductManage import Products
 from utils.SalesManage import Sales
 from utils.MonthDetails import Month
 import Database.CRUD as db
-# from Database.CRUD import insertInDB,reStart,updatePasswordForManagerInDB
 
 class Business:
 
@@ -23,6 +22,177 @@ class Business:
         self.productObjectForBusiness=Products()
         self.employeeObjectForBusiness=Employees()
 
+    def viewChartForAnalysis(self):
+        semch=input("(1)View All Term (2)Particular Term ")
+        if semch=="1":
+            pass
+
+        elif semch=="2":
+            pass
+
+        else:
+            print("invalid option")
+
+    def viewTableForAnalysis(self):
+        thch=input("(1)Current Month (2)Current Year (3)Last 3 Year \n")
+        if thch=="1":
+            m=None
+            if self.currentYearMonths:
+                m=self.currentYearMonths[len(self.currentYearMonths)-1]
+            else:
+                m=self.years[len(self.years)-1][11]
+
+            print(f"            *-* {self.name} *-*")
+            print("--> Current Month : ")
+            print("")
+            print()
+            print("haveEquity :",m.haveEquity)
+            print("assets :",m.assets)
+            print("Profit :",self.profit)
+            print()
+            print("Revenue :",m.revenue)
+
+            print("COGS :",m.COGS)
+            print("Gross Profit :",m.grossProfit)
+
+            if m.debt["amount"]:
+                print("•Dept : amount=",m.debt["amount"],"month left =",m.debt["Total_EMI"]-m.debt["paidedEMI"],"Persentage =",m.debt["persentage"])
+            
+            print("Marketing :",m.marketing)
+            print("Salaries To Employees :",m.totalSalaries)
+            print("Taxes :",m.totalTaxes)
+            print("Other :",m.other)
+            print()
+            print("Net Profit :",m.netProfit)
+            print("EBITDA :",m.EBITDA)
+            print()
+            print("Annual Revenue Run Rate :",self.annualRevenueRunRate)
+
+
+
+        elif thch=="2":
+            if self.currentYearMonths:
+                m=self.calculateTermsInGivenTime(self.currentYearMonths)
+                self.tableForAnalysis(m,"Current Year")
+        
+        elif thch=="3":
+            if len(self.years)>=3:
+                mList=[]
+                for i in self.years[len(self.years)-1]:
+                    mList.append(i)
+                for i in self.years[len(self.years)-2]:
+                    mList.append(i)
+                for i in self.years[len(self.years)-3]:
+                    mList.append(i)
+                m=self.calculateTermsInGivenTime(mList)
+                self.tableForAnalysis(m,"Last 3 Years")
+
+        else:
+            print("Invalid Option")
+
+
+    def generateFinanceMatrix(self):
+        thch=input("(1)Current Month (2)Current Year (3)Last 3 Year \n")
+        f=open("Finance_Portfolio.pdf","+w")
+        m=None
+        if self.currentYearMonths:
+            m=self.currentYearMonths[len(self.currentYearMonths)-1]
+        else:
+            m=self.years[len(self.years)-1][11]
+
+        
+
+        if thch=="1":
+            f.write(f"            *-* {self.name} *-*\n")
+            f.write("--> Current Month : \n")
+            f.write("\n")
+            f.write("\n")
+            f.write("haveEquity : "+str(m.haveEquity)+" \n")
+            f.write("assets : "+str(m.assets)+" \n")
+            f.write("Profit : "+str((m.netProfit*m.haveEquity)/100)+" \n")
+            f.write("\n")
+            f.write("Revenue : "+str(m.revenue)+" \n")
+
+            f.write("COGS : "+str(m.COGS)+" \n")
+            f.write("Gross Profit : "+str(m.grossProfit)+" \n")
+
+            if m.debt["amount"]:
+                f.write("•Dept : amount= "+str(m.debt["amount"])+" month left = "+str(m.debt["Total_EMI"]-m.debt["paidedEMI"])+" Persentage = "+str(m.debt["persentage"])+" \n")
+            
+            f.write("Marketing : "+str(m.marketing)+" \n")
+            f.write("Salaries To Employees : "+str(m.totalSalaries)+ " \n")
+            f.write("Taxes : "+str(m.totalTaxes)+" \n")
+            f.write("Other : "+str(m.other)+" \n")
+            f.write("\n")
+            f.write("Net Profit : "+str(m.netProfit)+" \n")
+            f.write("EBITDA : "+str(m.EBITDA)+" \n")
+            f.write("\n")
+            f.write("Annual Revenue Run Rate : "+str(self.annualRevenueRunRate)+" \n")
+            f.close()
+            print()
+            print("All Data Saved in Finance_Portfolio.pdf file")
+
+        elif thch=="2":
+            if self.currentYearMonths:
+                m=self.calculateTermsInGivenTime(self.currentYearMonths)
+                self.tableForAnalysisSaveInPDF(m,"Current Year")
+        
+        elif thch=="3":
+            if len(self.years)>=3:
+                mList=[]
+                for i in self.years[len(self.years)-1]:
+                    mList.append(i)
+                for i in self.years[len(self.years)-2]:
+                    mList.append(i)
+                for i in self.years[len(self.years)-3]:
+                    mList.append(i)
+                m=self.calculateTermsInGivenTime(mList)
+                self.tableForAnalysisSaveInPDF(m,"Last 3 Years")
+
+        else:
+            print("invalid option try again....")
+
+
+    def changeIMPORTANTTerm(self):
+        semch=""
+        while semch!="6":
+            print()
+            semch=input("(1)Business id (2)Business Name (3)haveEquity (4)assets (5)Debt (6)Exit\n")
+
+            if semch=="1":
+                newId=int(input("Enter New Business Id : "))
+                self.bid=newId
+                db.updateBusinessID(self)
+
+            elif semch=="2":
+                newName=input("Enter New Name For Business : ")
+                self.name=newName
+                db.updateBusinessName(self)
+
+            elif semch=="3":
+                newEquity=int(input("Enter New Business Equity : "))
+                self.haveEquity=newEquity
+                db.updateBusinessEquity(self)
+
+            elif semch=="4":
+                newAssets=int(input("Enter New Value Of Assets : "))
+                self.assets=newAssets
+                db.updateBusinessAssets(self)
+
+            elif semch=="5":
+                amount=float(input("Enter Amount Of Debt : "))
+                totalMonth=int(input("If EMI Then Enter Total Month : "))
+                persentage=float(input("Enter Persentage : "))
+                self.debt={"amount":amount,"Total_EMI":totalMonth,"paidedEMI":0,"persentage":persentage}
+                db.updateBusinessDebt(self)
+
+            elif semch=="6":
+                break
+
+            else:
+                print("Invalid Option")
+                
+    
 
     def main(self):
         choice=None
@@ -31,176 +201,20 @@ class Business:
             choice=input("(1)View Chart For Analysis (2)View Table For Analysis (3)Generate Finance Matrix PDF (4)Change Some IMPORTANT Term (5)Exit \n")
             
             if choice=="1":
-
-                semch=input("(1)View All Term (2)Particular Term ")
-                if semch=="1":
-                    pass
-                elif semch=="2":
-                    pass
-                else:
-                    print("invalid option")
-                
+                self.viewChartForAnalysis()
 
             elif choice=="2":
-
-                semch=input("(1)View All Term (2)Particular Term ")
-                if semch=="1":
-
-                    thch=input("(1)Current Month (2)Last 3 Months (3)Current Year (4)Last 3 Year")
-                    if thch=="1":
-                        m=None
-                        if self.currentYearMonths:
-                            m=self.currentYearMonths[len(self.currentYearMonths)-1]
-                        else:
-                            m=self.years[len(self.years)-1][11]
-
-                        print(f"            *-* {self.name} *-*")
-                        print("--> Current Month : ")
-                        print("")
-                        print()
-                        # revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employees,product,sales,shareMarket
-                        print("haveEquity :",m.haveEquity)
-                        print("assets :",m.assets)
-                        print("Profit :",self.profit)
-                        print()
-                        print("Revenue :",m.revenue)
-
-                        print("COGS :",m.COGS)
-                        print("Gross Profit :",m.grossProfit)
-
-                        if m.debt["amount"]:
-                            print("•Dept : amount=",m.debt["amount"],"month left =",m.debt["Total_EMI"]-m.debt["paidedEMI"],"Persentage =",m.debt["persentage"])
-                        
-                        print("Marketing :",m.marketing)
-                        print("Salaries To Employees :",m.totalSalaries)
-                        print("Taxes :",m.totalTaxes)
-                        print("Other :",m.other)
-                        print()
-                        print("Net Profit :",m.netProfit)
-                        print("EBITDA :",m.EBITDA)
-                        print()
-                        print("Annual Revenue Run Rate :",self.annualRevenueRunRate)
-
-
-
-                    elif thch=="2":
-                        l=[]
-                        cnt=1
-                        ycnt=0
-                        while len(l)!=3:
-                            if self.currentYearMonths and len(self.currentYearMonths)-cnt>=0:
-                                l.append(self.currentYearMonths[len(self.currentYearMonths)-cnt])
-                                cnt+=1
-                            else:
-                                l.append(self.years[len(self.years)-1][11-1])
-                        m=self.calculateTermsInGivenTime(3)
-                        self.tableForAnalysis(m,"Last 3 Months")
-                        
-
-                    elif thch=="3":
-                        if self.currentYearMonths:
-
-                            m=self.calculateTermsInGivenTime(self.currentYearMonths)
-                            self.tableForAnalysis(m,"Current Year")
-                    elif thch=="4":
-                        l=[]
-                        if len(self.years)>=3:
-                            for i in self.years:
-                                l.extend(i)
-                        
-                        m=self.calculateTermsInGivenTime(l)
-                        self.tableForAnalysis(m,"Last 3 Year")
-
-                    else:
-                        print("invalid option try again....")
-
-                elif semch=="2":
-
-                    thch=input("(1)Current Month (2)Last 3 Months (3)Current Year (4)Last 3 Year")
-                    if thch=="1":
-                        pass
-                    elif thch=="2":
-                        pass
-                    elif thch=="3":
-                        pass
-                    elif thch=="4":
-                        pass
-                    else:
-                        print("invalid option try again....")
-
-                else:
-                    print("invalid option")
+                self.viewTableForAnalysis()
 
             elif choice=="3":
-
-                semch=input("(1)Add All Term (2)Add Particular Term ")
-                if semch=="1":
-                    thch=input("(1)Current Month (2)Last 3 Months (3)Current Year (4)Last 3 Year")
-                    if thch=="1":
-                        pass
-                    elif thch=="2":
-                        pass
-                    elif thch=="3":
-                        pass
-                    elif thch=="4":
-                        pass
-                    else:
-                        print("invalid option try again....")
-
-                elif semch=="2":
-
-                    thch=input("(1)Current Month (2)Last 3 Months (3)Current Year (4)Last 3 Year")
-                    if thch=="1":
-                        pass
-                    elif thch=="2":
-                        pass
-                    elif thch=="3":
-                        pass
-                    elif thch=="4":
-                        pass
-                    else:
-                        print("invalid option try again....")
-
-                else:
-                    print("invalid option")
+                self.generateFinanceMatrix() 
 
             elif choice=="4":
-
-                semch=""
-                while semch!="6":
-
-                    semch=input("(1)Business id (2)Business Name (3)haveEquity (4)assets (5)Debt (6)Exit\n")
-
-                    if semch=="1":
-                        newId=int(input("Enter New Business Id : "))
-                        self.bid=newId
-                        db.updateBusinessID(self)
-                    elif semch=="2":
-                        newName=input("Enter New Name For Business : ")
-                        self.name=newName
-                        db.updateBusinessName(self)
-                    elif semch=="3":
-                        newEquity=int(input("Enter New Business Equity : "))
-                        self.haveEquity=newEquity
-                        db.updateBusinessEquity(self)
-                    elif semch=="4":
-                        newAssets=int(input("Enter New Value Of Assets : "))
-                        self.assets=newAssets
-                        db.updateBusinessAssets(self)
-                    elif semch=="5":
-                        amount=float(input("Enter Amount Of Debt : "))
-                        totalMonth=int(input("If EMI Then Enter Total Month : "))
-                        persentage=float(input("Enter Persentage : "))
-                        self.debt={"amount":amount,"Total_EMI":totalMonth,"paidedEMI":0,"persentage":persentage}
-                        db.updateBusinessDebt(self)
-                    elif semch=="6":
-                        break
-                    else:
-                        print("Invalid Option")
-                        print()
-
+                self.changeIMPORTANTTerm()
+            
             elif choice=="5":
                 break
+
             else:
                 print("Invalid Option")
 
@@ -228,6 +242,29 @@ class Business:
         print()
 
 
+    def tableForAnalysisSaveInPDF(self,m,time):
+        f=open("Finance_Portfolio.pdf","+w")
+        f.write(f"            *-* {self.name} *-*\n")
+        f.write("--> "+time+" : \n")
+        f.write("\n")
+        f.write("\n")
+        f.write("Profit : "+str(m["profit"])+" \n")
+        f.write("\n")
+        f.write("Revenue : "+str(m["revenue"])+" \n")
+
+        f.write("COGS : "+str(m["COGS"])+" \n")
+        f.write("Gross Profit : "+str(m["grossProfit"])+" \n")
+
+        f.write("Marketing : "+str(m["marketing"])+" \n")
+        f.write("Salaries To Employees : "+str(m["totalSalaries"])+" \n")
+        f.write("Taxes : "+str(m["totalTaxes"])+" \n")
+        f.write("Other : "+str(m["other"])+" \n")
+        f.write("\n")
+        f.write("Net Profit : "+str(m["netProfit"])+" \n")
+        f.write("EBITDA : "+str(m["EBITDA"])+" \n")
+        f.close()
+        print("All Data Saved in Finance_Portfolio.pdf file")
+
 # revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employees,product,sales,shareMarket
     def calculateTermsInGivenTime(self,givenTimeInMonth):
         ans={"profit":0,"revenue":0,"COGS":0,"grossProfit":0,"marketing":0,"totalSalaries":0,"totalTaxes":0,"other":0,"netProfit":0,"EBITDA":0}
@@ -243,6 +280,7 @@ class Business:
             ans["netProfit"]+=m.netProfit
             ans["EBITDA"]+=m.EBITDA
 
+        return ans
 
 
             
@@ -264,8 +302,10 @@ class Business:
         #corporate Tax  30% <1cr || 1<Pro>10 37% || >10cr 42%
         if IncomeBeforeTaxes<=0:
             return 0
+        
         if IncomeBeforeTaxes>100000000:
             return (IncomeBeforeTaxes*42)/100
+        
         if IncomeBeforeTaxes<10000000 and IncomeBeforeTaxes<=100000000:
             return (IncomeBeforeTaxes*37)/100
         
@@ -283,6 +323,7 @@ class Business:
 
         else:
             m=self.years[len(self.years)-1][11]
+
         activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
         revenue=m.revenue
         # self.debt={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
@@ -336,23 +377,21 @@ class Business:
                 marketing=int(input("Enter Marketing Cost : "))
                 depreciation=int(input("Enter Depreciation Cost : "))
                 other=int(input("Enter Other Cost : "))
+
                 totalSalaries=self.employeeObjectForBusiness.allEmployeeSalaryTotal()
                 afterEMIProfit=self.currentDebtCalculation(grossProfit)
                 IncomeBeforeTaxes=afterEMIProfit-marketing-depreciation-other-totalSalaries
+
                 totalTaxes=self.taxCalculation(IncomeBeforeTaxes)  
                 
                 netProfit=IncomeBeforeTaxes-totalTaxes  
                 self.profit=(netProfit*self.haveEquity)/100
-                # employeesObj=Employees()
-                # employeesObj.employeesDetails=self.employeeObjectForBusiness.employeesDetails.copy()
-                # print("9",)
-                # productObj=Products()
-                # productObj.allProduct=self.productObjectForBusiness.allProduct.copy()
-                # print("10")
-                shareMarket=None
                 EBITDA=netProfit+depreciation+totalTaxes
+
+                shareMarket=None
                 if self.debt["amount"] and debt["Total_EMI"]:
                     EBITDA+=debt["amount"]/debt["Total_EMI"]
+
                 m=Month(revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,saleObj,shareMarket)
                 
                 self.storeDetails(m)
@@ -382,6 +421,7 @@ class Business:
             self.years.append(self.currentYearMonths)
             self.currentYearMonths.clear()
             db.updateBusinessYears(self)
+
         else:
             self.currentYearRevenue+=m.revenue
             self.annualRevenueRunRate=((self.currentYearRevenue/len(self.currentYearMonths))*12)

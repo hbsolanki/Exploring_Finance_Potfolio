@@ -104,7 +104,7 @@ def createMonthObj(m):
     grossProfit=m["grossProfit"]
     netProfit=m["netProfit"]
     totalSalaries=m["totalSalaries"]
-    COGS=m["COGS"],
+    COGS=m["COGS"]
     totalTaxes=m["totalTaxes"]
     other=m["other"]
 
