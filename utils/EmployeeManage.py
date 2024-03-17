@@ -37,6 +37,7 @@ class Employees:
     def employeeManagement(self):
         choice=None
         while choice !="4":
+            print()
             choice=input("(1)Add Employee \n(2)Remove Employee \n(3)Increment All Employee Salary \n(4)Increment Salary Particular Employee \n(5)View All Employee Details \n(6)View Particular Employee Details \n(7)Exit \n")
 
             if (choice in ["2","3","4","5","6"]) and (not self.employeesDetails):
@@ -85,6 +86,7 @@ class Employees:
                 for i in self.employeesDetails:
                     if i.eid==eid:
                         print(i.eid,i.name,i.designation,i.salary,i.x)
+                        break
                         
                 else:
                     print("This Employee ID Not Found...")

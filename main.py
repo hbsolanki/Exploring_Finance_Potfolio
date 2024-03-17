@@ -1,6 +1,7 @@
 #1.some 2.sharemarket 3.marketing 4.product 5.employee
 from utils.Business import Business
-from Database.CRUD import insertInDB,reStart,updatePasswordForManagerInDB
+from Database.CRUD import insertInDB,updatePasswordForManagerInDB
+from Database.getData import reStart
 
 class Main:
 
@@ -16,6 +17,7 @@ class Main:
             if i.bid==id:
                 i.password=password
                 updatePasswordForManagerInDB(i)
+                break
         
         else:
             print("Invalid Id")
@@ -25,10 +27,10 @@ class Main:
         self.allBusiness=reStart()
 
         choice=None
-        print()
+        
 
         while choice!="3":
-
+            print()
             choice=input("(1)Owner \n(2)Manager \n(3)Exit \n")
 
             if choice=="1":
@@ -47,7 +49,6 @@ class Main:
                         password=input("Enter Password : ")
                         if i.password==password:
                             self.manage(i)
-                            print("Manager Return ")
                             return
                         else:
                             print("Wrong password Try Again...")
@@ -69,7 +70,7 @@ class Main:
     def owner(self):
         choice=None
         while choice!="3":
-
+            print()
             choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Exit \n ")
 
             try:
@@ -112,9 +113,7 @@ class Main:
             
 
     def manage(self,bussinessObj):
-        # print(bussinessObj.productObjectForBusiness.allProduct)
         bussinessObj.manager()
-        insertInDB(bussinessObj)
 
 
     def newBusinessCreateAnalysis(self):
@@ -127,7 +126,7 @@ class Main:
 
         print("** From All Business Total Profit :",totalProfit,"₹")
         print("** From All Business Debt Profit :",totalDebt,"₹")
-
+        print()
         print("(1)Create New Business (else)Exit")
         choice=input()
 
@@ -147,25 +146,29 @@ class Main:
                 if ch=="1":
                     print("->Debt Details  ")
                     amount=int(input("Enter Amount : "))
+                    b.debt["amount"]=amount
                     chemi=input("(1)Converted Into EMI (2)Not Converted Into EMI")
-
+                    print("!")
                     if chemi=="1":
                         Total_EMI=int(input("Enter Total EMI Month : "))
-                        b.debt["amount"]=amount
+                        
                         b.debt["Total_EMI"]=Total_EMI
 
                     else:
-                        
-                        persentage=int(input("Enter Persentage Of Debt : "))
+                        print("2")
+                        persentage=float(input("Enter Persentage Of Debt : "))
                         b.debt["persentage"]=persentage
+                        print("3")
                     
                 
                 self.allBusiness.append(b)
+                print("4")
                 insertInDB(b)
+                print("5")
 
             except:
 
-                print("Some Error Occur")
+                print("Something Wrong....")
             
         else:
             return

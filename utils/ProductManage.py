@@ -40,7 +40,7 @@ class Products:
 
         choice=None
         while choice !="4":
-
+            print()
             choice=input("(1)Add Product \n(2)Remove Product \n(3)Increment All Product Price \n(4)Increment Price Particular Product \n(5)View All Product Details \n(6)View Particular Product Details \n(7)Exit \n")
             
             if (choice in ["2","3","4","5","6"]) and (not self.allProduct):
@@ -100,6 +100,7 @@ class Products:
                 for i in self.allProduct:
                     if i.pid==pid:
                         print(i.pid,i.name,i.cost,i.revenue,i.x)
+                        break
                         
                 else:
                     print("This Product ID Not Found...")

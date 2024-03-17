@@ -9,7 +9,7 @@ import utils.SalesManage as SalesManage
 
 class Month:
 
-    def __init__(self,revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employees,product,sales,shareMarket):
+    def __init__(self,revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,sales,shareMarket):
         self.revenue=revenue
         self.debt=debt
         self.haveEquity=haveEquity
@@ -24,7 +24,7 @@ class Month:
         self.totalTaxes=totalTaxes
         self.other=other
 
-        self.employees=employees
-        self.product=product()
-        self.sales=sales()
-        self.shareMarket=shareMarket()
+        # self.employees=employees
+        # self.product=product
+        self.sales=sales
+        self.shareMarket=shareMarket

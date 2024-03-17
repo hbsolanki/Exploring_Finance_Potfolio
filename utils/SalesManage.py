@@ -1,5 +1,4 @@
 import numpy as np
-import utils.ProductManage as pdct
 
 class Sales:
 
@@ -11,27 +10,49 @@ class Sales:
             self.revenue=revenue
             self.quantity=quantity
 
-    # currentMonthDaySale=np.empty([31], dtype=object)
-    # currentYearMonthSale=np.empty([12], dtype=object)
-    # yearlySale=[]
     listOfProductsSale=[]
     totalRevenue=0
     COGS=0
 
+
+
     def productSaleAdd(self,pid,name,cost,revenue,noOfProductSale):
         self.listOfProductsSale.append(self.Sale(pid,name,cost,revenue,noOfProductSale))
 
+
     def saleInput(self,pdct): 
-        allProductDetails=pdct.allProduct
-        listOfProductsSale=[]
-        for i in allProductDetails:
+        
+        for i in pdct.allProduct:
             
             noOfProductSale=int(input(str(i.pid)+" " +i.name+" quantity sale : "))
-            listOfProductsSale.append(self.Sale(i.pid,i.name,i.cost,i.revenue,noOfProductSale))
+            self.listOfProductsSale.append(self.Sale(i.pid,i.name,i.cost,i.revenue,noOfProductSale))
             # print(i.revenue)
-            self.totalRevenue+=(noOfProductSale*i.revenue)
+            self.totalRevenue+=(noOfProductSale*i.cost)
             self.COGS+=(noOfProductSale*(i.cost-i.revenue))
 
         return self.totalRevenue
+    
+
+    def viewSaleDetails(self):
+        choice=input("(1)View All Product Sale (2)View Particular Product Sale")
+
+        if choice=="1":
+            self.viewAllProductSale()
+
+        elif choice=="2":
+            pid=int(input("Enter Product Id : "))
+            for i in self.listOfProductsSale:
+                if i.pid==pid:
+                    print((i.pid,i.name,i.cost,i.revenue,i.noOfProductSale))
+                    print()
+        
+        else:
+            print("Invalid Option try again...")
+
+
+    def viewAllProductSale(self):
+        for i in self.listOfProductsSale:
+            print((i.pid,i.name,i.cost,i.revenue,i.noOfProductSale))
+            print()
         
     
