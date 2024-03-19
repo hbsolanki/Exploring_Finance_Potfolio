@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 from utils.EmployeeManage import Employees 
 from utils.ProductManage import Products
 from utils.SalesManage import Sales
@@ -22,12 +22,83 @@ class Business:
         self.productObjectForBusiness=Products()
         self.employeeObjectForBusiness=Employees()
 
-    def viewChartForAnalysis(self):
-        semch=input("(1)View All Term (2)Particular Term ")
-        if semch=="1":
-            pass
 
-        elif semch=="2":
+    def chartsUnitEconomicsForLastMonth(self,activities):
+        
+        if self.currentYearMonths:
+            m=self.currentYearMonths[len(self.currentYearMonths)-1]
+
+        else:
+            m=self.years[len(self.years)-1][11]
+
+        
+        revenue=m.revenue
+        logistics=0
+        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            logistics=self.debt["amount"]//self.debt["Total_EMI"]
+        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITDA*100)/revenue]
+        
+        plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+        
+        plt.legend()
+        plt.show()
+
+
+    def chartsUnitEconomicsForCurrentYear(self,activities):
+        if self.currentYearMonths:
+            logistics=0
+            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
+            m=self.calculateTermsInGivenTime(self.currentYearMonths)
+            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
+        
+            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+            
+            plt.legend()
+            plt.show()
+
+            
+
+
+    def chartsUnitEconomicsForLastYear(self,activities):
+        if len(self.years)>=1:
+            mList=[]
+            for i in self.years:
+                mList.append(i)
+            m=self.calculateTermsInGivenTime(mList)
+            logistics=0
+            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
+
+            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
+        
+            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+            
+            plt.legend()
+            plt.show()
+
+
+
+    def viewChartForAnalysis(self):
+        choice=input("(1)UnitEconomics Pie-Chart (2)Sale (3)Employee ")
+        if choice=="1":
+
+            activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
+            semiChoice=input("(1)Last Month (2)Current Year (3)Last 3 year")
+
+            if semiChoice=="1":
+                self.chartsUnitEconomicsForLastMonth(activities)
+
+            elif semiChoice=="2":
+                self.chartsUnitEconomicsForCurrentYear(activities)
+            
+            elif semiChoice=="3":
+                self.chartsUnitEconomicsForLastYear(activities)
+
+            else:
+                print("invalid option try again...")
+
+        elif choice=="2":
             pass
 
         else:
@@ -313,36 +384,8 @@ class Business:
 
     
 
-    def generateAllDetailsFile(self):
-        pass
 
-    def chartsUnitEconomicsForLastMonth(self):
-        
-        if self.currentYearMonths:
-            m=self.currentYearMonths[len(self.currentYearMonths)-1]
-
-        else:
-            m=self.years[len(self.years)-1][11]
-
-        activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
-        revenue=m.revenue
-        # self.debt={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
-        logistics=0
-        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
-            logistics=self.debt["amount"]//self.debt["Total_EMI"]
-        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITDA*100)/revenue]
-        color=['r','y','g','b','v']
-        # plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
-        # plt.legend()
-        # plt.show()
-
-
-    def chartsUnitEconomicsForCurrentYear(self):
-        pass
-
-    def chartsUnitEconomicsForLastYear(self):
-        pass
-
+    
     
     
 
