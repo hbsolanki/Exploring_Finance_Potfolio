@@ -23,60 +23,32 @@ class Business:
         self.employeeObjectForBusiness=Employees()
 
 
-    def chartsUnitEconomicsForLastMonth(self,activities):
-        
-        if self.currentYearMonths:
-            m=self.currentYearMonths[len(self.currentYearMonths)-1]
+    
 
-        else:
-            m=self.years[len(self.years)-1][11]
+    def owner(self):
+        choice=None
 
-        
-        revenue=m.revenue
-        logistics=0
-        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
-            logistics=self.debt["amount"]//self.debt["Total_EMI"]
-        slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITDA*100)/revenue]
-        
-        plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
-        
-        plt.legend()
-        plt.show()
-
-
-    def chartsUnitEconomicsForCurrentYear(self,activities):
-        if self.currentYearMonths:
-            logistics=0
-            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
-            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
-            m=self.calculateTermsInGivenTime(self.currentYearMonths)
-            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
-        
-            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+        while choice!="3":
+            print()
+            choice=input("(1)View Chart For Analysis (2)View Table For Analysis (3)Generate Finance Matrix PDF (4)Change Some IMPORTANT Term (5)Exit \n")
             
-            plt.legend()
-            plt.show()
+            if choice=="1":
+                self.viewChartForAnalysis()
 
+            elif choice=="2":
+                self.viewTableForAnalysis()
+
+            elif choice=="3":
+                self.generateFinanceMatrix() 
+
+            elif choice=="4":
+                self.changeIMPORTANTTerm()
             
+            elif choice=="5":
+                break
 
-
-    def chartsUnitEconomicsForLastYear(self,activities):
-        if len(self.years)>=1:
-            mList=[]
-            for i in self.years:
-                mList.append(i)
-            m=self.calculateTermsInGivenTime(mList)
-            logistics=0
-            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
-            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
-
-            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
-        
-            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
-            
-            plt.legend()
-            plt.show()
-
+            else:
+                print("Invalid Option")
 
 
     def viewChartForAnalysis(self):
@@ -104,8 +76,61 @@ class Business:
         else:
             print("invalid option")
 
+
+    def chartsUnitEconomicsForLastMonth(self,activities):
+            
+            if self.currentYearMonths:
+                m=self.currentYearMonths[len(self.currentYearMonths)-1]
+
+            else:
+                m=self.years[len(self.years)-1][11]
+
+            
+            revenue=m.revenue
+            logistics=0
+            if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+                logistics=self.debt["amount"]//self.debt["Total_EMI"]
+
+            slices=[(m.COGS*100)/revenue,((logistics+m.other)*100)/revenue,(m.marketing*100)/revenue,(m.totalSalaries*100)/revenue,(m.EBITDA*100)/revenue]
+            
+            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+            plt.legend()
+            plt.show()
+
+
+    def chartsUnitEconomicsForCurrentYear(self,activities):
+        if self.currentYearMonths:
+            logistics=0
+            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
+            m=self.calculateTermsInGivenTime(self.currentYearMonths)
+            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
+        
+            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+            plt.legend()
+            plt.show()
+
+            
+    def chartsUnitEconomicsForLastYear(self,activities):
+        if len(self.years)>=1:
+            mList=[]
+            for i in self.years:
+                mList.append(i)
+            m=self.calculateTermsInGivenTime(mList)
+            logistics=0
+            # if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            #     logistics=self.debt["amount"]//self.debt["Total_EMI"]
+
+            slices=[(m["COGS"]*100)/m["revenue"],((logistics+m["other"])*100)/m["revenue"],(m["marketing"]*100)/m["revenue"],(m["totalSalaries"]*100)/m["revenue"],(m["EBITDA"]*100)/m["revenue"]]
+        
+            plt.pie(slices,labels=activities,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+            plt.legend()
+            plt.show()
+
+    
     def viewTableForAnalysis(self):
         thch=input("(1)Current Month (2)Current Year (3)Last 3 Year \n")
+
         if thch=="1":
             m=None
             if self.currentYearMonths:
@@ -140,7 +165,6 @@ class Business:
             print("Annual Revenue Run Rate :",self.annualRevenueRunRate)
 
 
-
         elif thch=="2":
             if self.currentYearMonths:
                 m=self.calculateTermsInGivenTime(self.currentYearMonths)
@@ -162,17 +186,81 @@ class Business:
             print("Invalid Option")
 
 
+    def tableForAnalysis(self,m,time):
+        print(f"            *-* {self.name} *-*")
+        print("-->",time,": ")
+        print("")
+        print()
+        print("Profit :",m["profit"])
+        print()
+        print("Revenue :",m["revenue"])
+
+        print("COGS :",m["COGS"])
+        print("Gross Profit :",m["grossProfit"])
+
+        print("Marketing :",m["marketing"])
+        print("Salaries To Employees :",m["totalSalaries"])
+        print("Taxes :",m["totalTaxes"])
+        print("Other :",m["other"])
+        print()
+        print("Net Profit :",m["netProfit"])
+        print("EBITDA :",m["EBITDA"])
+        print()
+
+
+    def tableForAnalysisSaveInPDF(self,m,time):
+        f=open("Finance_Portfolio.pdf","+w")
+        f.write(f"            *-* {self.name} *-*\n")
+        f.write("--> "+time+" : \n")
+        f.write("\n")
+        f.write("\n")
+        f.write("Profit : "+str(m["profit"])+" \n")
+        f.write("\n")
+        f.write("Revenue : "+str(m["revenue"])+" \n")
+
+        f.write("COGS : "+str(m["COGS"])+" \n")
+        f.write("Gross Profit : "+str(m["grossProfit"])+" \n")
+
+        f.write("Marketing : "+str(m["marketing"])+" \n")
+        f.write("Salaries To Employees : "+str(m["totalSalaries"])+" \n")
+        f.write("Taxes : "+str(m["totalTaxes"])+" \n")
+        f.write("Other : "+str(m["other"])+" \n")
+        f.write("\n")
+        f.write("Net Profit : "+str(m["netProfit"])+" \n")
+        f.write("EBITDA : "+str(m["EBITDA"])+" \n")
+        f.close()
+        print("All Data Saved in Finance_Portfolio.pdf file")
+
+
+    def calculateTermsInGivenTime(self,givenTimeInMonth):
+        ans={"profit":0,"revenue":0,"COGS":0,"grossProfit":0,"marketing":0,"totalSalaries":0,"totalTaxes":0,"other":0,"netProfit":0,"EBITDA":0}
+
+        for m in givenTimeInMonth:
+            ans["profit"]+=(m.netProfit*m.haveEquity)/100
+            ans["revenue"]+=m.revenue
+            ans["COGS"]+=m.COGS
+            ans["grossProfit"]+=m.grossProfit
+            ans["marketing"]+=m.marketing
+            ans["totalSalaries"]+=m.totalSalaries
+            ans["totalTaxes"]+=m.totalTaxes
+            ans["other"]+=m.other
+            ans["netProfit"]+=m.netProfit
+            ans["EBITDA"]+=m.EBITDA
+
+        return ans
+    
+
     def generateFinanceMatrix(self):
         thch=input("(1)Current Month (2)Current Year (3)Last 3 Year \n")
         f=open("Finance_Portfolio.pdf","+w")
         m=None
+
         if self.currentYearMonths:
             m=self.currentYearMonths[len(self.currentYearMonths)-1]
         else:
             m=self.years[len(self.years)-1][11]
 
-        
-
+    
         if thch=="1":
             f.write(f"            *-* {self.name} *-*\n")
             f.write("--> Current Month : \n")
@@ -263,136 +351,7 @@ class Business:
             else:
                 print("Invalid Option")
                 
-    
 
-    def main(self):
-        choice=None
-        while choice!="3":
-            print()
-            choice=input("(1)View Chart For Analysis (2)View Table For Analysis (3)Generate Finance Matrix PDF (4)Change Some IMPORTANT Term (5)Exit \n")
-            
-            if choice=="1":
-                self.viewChartForAnalysis()
-
-            elif choice=="2":
-                self.viewTableForAnalysis()
-
-            elif choice=="3":
-                self.generateFinanceMatrix() 
-
-            elif choice=="4":
-                self.changeIMPORTANTTerm()
-            
-            elif choice=="5":
-                break
-
-            else:
-                print("Invalid Option")
-
-
-
-    def tableForAnalysis(self,m,time):
-        print(f"            *-* {self.name} *-*")
-        print("-->",time,": ")
-        print("")
-        print()
-        print("Profit :",m["profit"])
-        print()
-        print("Revenue :",m["revenue"])
-
-        print("COGS :",m["COGS"])
-        print("Gross Profit :",m["grossProfit"])
-
-        print("Marketing :",m["marketing"])
-        print("Salaries To Employees :",m["totalSalaries"])
-        print("Taxes :",m["totalTaxes"])
-        print("Other :",m["other"])
-        print()
-        print("Net Profit :",m["netProfit"])
-        print("EBITDA :",m["EBITDA"])
-        print()
-
-
-    def tableForAnalysisSaveInPDF(self,m,time):
-        f=open("Finance_Portfolio.pdf","+w")
-        f.write(f"            *-* {self.name} *-*\n")
-        f.write("--> "+time+" : \n")
-        f.write("\n")
-        f.write("\n")
-        f.write("Profit : "+str(m["profit"])+" \n")
-        f.write("\n")
-        f.write("Revenue : "+str(m["revenue"])+" \n")
-
-        f.write("COGS : "+str(m["COGS"])+" \n")
-        f.write("Gross Profit : "+str(m["grossProfit"])+" \n")
-
-        f.write("Marketing : "+str(m["marketing"])+" \n")
-        f.write("Salaries To Employees : "+str(m["totalSalaries"])+" \n")
-        f.write("Taxes : "+str(m["totalTaxes"])+" \n")
-        f.write("Other : "+str(m["other"])+" \n")
-        f.write("\n")
-        f.write("Net Profit : "+str(m["netProfit"])+" \n")
-        f.write("EBITDA : "+str(m["EBITDA"])+" \n")
-        f.close()
-        print("All Data Saved in Finance_Portfolio.pdf file")
-
-# revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,employees,product,sales,shareMarket
-    def calculateTermsInGivenTime(self,givenTimeInMonth):
-        ans={"profit":0,"revenue":0,"COGS":0,"grossProfit":0,"marketing":0,"totalSalaries":0,"totalTaxes":0,"other":0,"netProfit":0,"EBITDA":0}
-        for m in givenTimeInMonth:
-            ans["profit"]+=(m.netProfit*m.haveEquity)/100
-            ans["revenue"]+=m.revenue
-            ans["COGS"]+=m.COGS
-            ans["grossProfit"]+=m.grossProfit
-            ans["marketing"]+=m.marketing
-            ans["totalSalaries"]+=m.totalSalaries
-            ans["totalTaxes"]+=m.totalTaxes
-            ans["other"]+=m.other
-            ans["netProfit"]+=m.netProfit
-            ans["EBITDA"]+=m.EBITDA
-
-        return ans
-
-
-            
-
-    def currentDebtCalculation(self,grossProfit):
-        # self.dept={"amount":None,"Total_EMI":None,"paidedEMI":None,"persentage":None}
-        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
-            emiPrice=self.debt["amount"]/self.debt["Total_EMI"]
-            if emiPrice<grossProfit:
-                afterEMIProfit=grossProfit-emiPrice
-                self.debt={"amount":self.debt["amount"],"Total_EMI":self.debt["Total_EMI"],"paidedEMI":self.debt["paidedEMI"]+1,"persentage":self.debt["persentage"]}
-                return afterEMIProfit
-            else:
-                return grossProfit
-        else:
-            return grossProfit
-
-    def taxCalculation(self,IncomeBeforeTaxes):
-        #corporate Tax  30% <1cr || 1<Pro>10 37% || >10cr 42%
-        if IncomeBeforeTaxes<=0:
-            return 0
-        
-        if IncomeBeforeTaxes>100000000:
-            return (IncomeBeforeTaxes*42)/100
-        
-        if IncomeBeforeTaxes<10000000 and IncomeBeforeTaxes<=100000000:
-            return (IncomeBeforeTaxes*37)/100
-        
-        return (IncomeBeforeTaxes*30)/100
-
-    
-
-
-    
-    
-    
-
-    # def pieChart(self,activities,slices,color):
-    #     plt.pie(slices,labels=activities,colors=color,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
-    #     plt.legend()
-    #     plt.show()
 
 
 
@@ -403,7 +362,7 @@ class Business:
         while choice!="4":
 
             print()
-            choice=input("(1)Add Month Details \n(2)Employee \n(3)Product \n(4)Exit \n")
+            choice=input("(1)Add Month Details \n(2)Employee Management \n(3)Product Management \n(4)View Sale Details \n(5)View Chart For Analysis \n(6)View Table For Analysis \n(7)Generate Finance Matrix PDF \n(8)Exit \n")
 
             if choice=="1":
                 saleObj=Sales()
@@ -449,12 +408,23 @@ class Business:
                 db.updateBusinessProductDetails(self)
 
             elif choice=="4":
+                self.viewSaleDetails()
+
+            elif choice=="5":
+                self.viewChartForAnalysis()
+
+            elif choice=="6":
+                self.viewTableForAnalysis()
+
+            elif choice=="7":
+                self.generateFinanceMatrix()
+
+
+            elif choice=="8":
                 break
 
             else:
-                print("INVALID Option")
-
-        # insertInDB(self)     
+                print("INVALID Option")    
 
 
     def storeDetails(self,m):
@@ -469,4 +439,46 @@ class Business:
             self.currentYearRevenue+=m.revenue
             self.annualRevenueRunRate=((self.currentYearRevenue/len(self.currentYearMonths))*12)
             db.updateBusinessCurrentYearMonth(self)
+
+
+    def currentDebtCalculation(self,grossProfit):
+        if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            emiPrice=self.debt["amount"]/self.debt["Total_EMI"]
+            if emiPrice<grossProfit:
+                afterEMIProfit=grossProfit-emiPrice
+                self.debt={"amount":self.debt["amount"],"Total_EMI":self.debt["Total_EMI"],"paidedEMI":self.debt["paidedEMI"]+1,"persentage":self.debt["persentage"]}
+                return afterEMIProfit
+            else:
+                return grossProfit
+        else:
+            return grossProfit
         
+
+    def taxCalculation(self,IncomeBeforeTaxes):
+        #corporate Tax  30% <1cr || 1<Pro>10 37% || >10cr 42%
+        if IncomeBeforeTaxes<=0:
+            return 0
+        
+        if IncomeBeforeTaxes>100000000:
+            return (IncomeBeforeTaxes*42)/100
+        
+        if IncomeBeforeTaxes<10000000 and IncomeBeforeTaxes<=100000000:
+            return (IncomeBeforeTaxes*37)/100
+        
+        return (IncomeBeforeTaxes*30)/100
+
+        
+    def viewSaleDetails(self):
+        choice=input("(1)Last Month (2)Current Year (3)Last 3 year")
+
+        if choice=="1":
+            pass
+
+        elif choice=="2":
+            pass
+        
+        elif choice=="3":
+            pass
+        
+        else:
+            print("invalid option try again...")

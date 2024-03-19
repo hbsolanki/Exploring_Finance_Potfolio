@@ -15,12 +15,8 @@ db=client["FinancePotfolio"]
 collection=db["business"]
 
 
-
-
 def getFromDB():
     return collection.find()
-
-
 
 
 def reStart():
@@ -66,13 +62,13 @@ def reStart():
     return allBusinessForMain
 
 
-
 def createEmployeeObj(emp):
     employee=Employees()
     for j in emp["employeesDetails"]:
         employee.addEmployee(j["eid"],j["name"],j["designation"],j["salary"],j["x"])
 
     return employee
+
 
 def createProductObj(pdct):
     product=Products()
@@ -83,6 +79,7 @@ def createProductObj(pdct):
     
     return product
 
+
 def createSalesObj(s):
     sale=Sales()
     listOfProductSale=[]
@@ -91,7 +88,6 @@ def createSalesObj(s):
     for i in s["listOfProductsSale"]:
         sale.productSaleAdd(i["pid"],i["name"],i["cost"],i["revenue"],i["quantity"])
     return sale
-
 
 
 def createMonthObj(m):
@@ -107,9 +103,6 @@ def createMonthObj(m):
     COGS=m["COGS"]
     totalTaxes=m["totalTaxes"]
     other=m["other"]
-
-    # employees=createEmployeeObj(m["employees"])
-    # product=createProductObj(m["product"])
     sales=createSalesObj(m["sales"])
     shareMarket=m["shareMarket"]
 

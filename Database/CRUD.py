@@ -13,12 +13,14 @@ collection=db["business"]
 def updatePasswordForManagerInDB(b):
     collection.update_one({"bid":b.bid},{"$set" :{"password":b.password}})
 
-# Business id (2)Business Name (3)haveEquity (4)assets (5)Debt
+
 def updateBusinessID(b):
     collection.update_one({"name:":b.name},{"$set" :{"bid":b.bid}})
 
+
 def updateBusinessName(b):
     collection.update_one({"bid":b.bid},{"$set" :{"name":b.name}})
+
 
 def updateBusinessEquity(b):
     collection.update_one({"bid":b.bid},{"$set" :{"haveEquity":b.haveEquity}})
@@ -39,6 +41,7 @@ def updateBusinessProductDetails(b):
 
     collection.update_one({"bid":b.bid},{"$set" :{"product":{"allProduct":allProduct}}})
 
+
 def updateBusinessEmployeeDetails(b):
     employeesDetails=[]
     for i in b.employeeObjectForBusiness.employeesDetails:
@@ -49,8 +52,10 @@ def updateBusinessEmployeeDetails(b):
 
 def updateBusinessCurrentYearMonth(b):
     mlist=[]
+    
     for i in b.currentYearMonths:
         mlist.append(getmonthDictionry(i))
+
     collection.update_one({"bid":b.bid},{"$set" :{"currentYearMonths":mlist}})
     collection.update_one({"bid":b.bid},{"$set" :{"annualRevenueRunRate":b.annualRevenueRunRate}})
     collection.update_one({"bid":b.bid},{"$set" :{"currentYearRevenue":b.currentYearRevenue}})
@@ -58,6 +63,7 @@ def updateBusinessCurrentYearMonth(b):
 
 def updateBusinessYears(b):
     Y=[]
+
     for y in b.years:
         allM=[]
         for m in y:
@@ -68,29 +74,26 @@ def updateBusinessYears(b):
 
 
 def insertInDB(b):
-
     CYM=[]
     for m in b.currentYearMonths:
         CYM.append(getmonthDictionry(m))
     
-    
     Y=[]
     for y in b.years:
+
         allM=[]
         for m in y:
             allM.append(getmonthDictionry(m))
-        Y.append(allM)   
 
+        Y.append(allM)   
     
     employeesDetails=[]
     for i in b.employeeObjectForBusiness.employeesDetails:
         employeesDetails.append({"eid":i.eid,"name":i.name,"designation":i.designation,"salary":i.salary,"x":i.x})
     
-    
     allProduct=[]
     for i in b.productObjectForBusiness.allProduct:
         allProduct.append({"pid":i.pid,"name":i.name,"cost":i.cost,"revenue":i.revenue,"x":i.x})
-
 
     collection.insert_one({
         "password":b.password,
@@ -118,15 +121,13 @@ def insertInDB(b):
     })
 
 
-
 def getmonthDictionry(m):
-
     sale=m.sales
     listOfProductsSale=[]
+
     for i in sale.listOfProductsSale:
         listOfProductsSale.append({"pid":i.pid,"name":i.name,"cost":i.cost,"revenue":i.revenue,"quantity":i.quantity})
 
-        
     monthDic={
         "revenue":m.revenue,
         "debt":{
@@ -154,9 +155,6 @@ def getmonthDictionry(m):
     }
 
     return monthDic
-
-
-
 
 
 def deleteEvery():

@@ -9,18 +9,6 @@ class Main:
         self.allBusiness=[]
         self.ownerPass=password
 
-    def addManager(self):
-        id=int(input("Enter Bussiness id : "))
-        print()
-        password=input("Enter Password To set : ")
-        for i in self.allBusiness:
-            if i.bid==id:
-                i.password=password
-                updatePasswordForManagerInDB(i)
-                break
-        
-        else:
-            print("Invalid Id")
 
     def mainFunc(self):
         #getting Data From Database
@@ -48,7 +36,7 @@ class Main:
                     if i.bid==id:
                         password=input("Enter Password : ")
                         if i.password==password:
-                            self.manage(i)
+                            i.manager()
                             return
                         else:
                             print("Wrong password Try Again...")
@@ -64,56 +52,49 @@ class Main:
                 print("Invalid Option")
 
         
-            
-            
-
     def owner(self):
         choice=None
+
         while choice!="3":
             print()
             choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Exit \n ")
 
-            # try:
+            try:
 
-            if choice=="1":
+                if choice=="1":
 
-                print()
-                for i in self.allBusiness:
-                    print(i.bid,i.name)
-                print()
-                
-                idForANA=int(input("Enter Business ID For Analysis : "))
-                for i in self.allBusiness:
-                    if idForANA==i.bid:
-                        i.main()
-                        break
+                    print()
+                    for i in self.allBusiness:
+                        print(i.bid,i.name)
+                    print()
+                    
+                    idForANA=int(input("Enter Business ID For Analysis : "))
+                    for i in self.allBusiness:
+                        if idForANA==i.bid:
+                            i.owner()
+                            break
+                    else:
+                        print("INVALID Business ID")
+                    
+                elif choice=="2":
+
+                    #Creating New Business and ADD All Business 
+                    print()
+                    self.newBusinessCreateAnalysis()
+
+                elif choice=="3":
+                    self.addManager()
+
+                elif choice=="4":
+                    break
+
                 else:
-                    print("INVALID Business ID")
-                
-            elif choice=="2":
-
-                #Creating New Business and ADD All Business 
-                print()
-                self.newBusinessCreateAnalysis()
-
-            elif choice=="3":
-                self.addManager()
-
-            elif choice=="4":
-                break
-
-            else:
-                print("INVALID Option")
-                self.owner()
+                    print("INVALID Option")
+                    self.owner()
 
 
-            # except:
-            #         print("Error Occure")
-            
-            
-
-    def manage(self,bussinessObj):
-        bussinessObj.manager()
+            except:
+                    print("Error Occure")
 
 
     def newBusinessCreateAnalysis(self):
@@ -170,6 +151,19 @@ class Main:
             
         else:
             return
+        
+    def addManager(self):
+        id=int(input("Enter Bussiness id : "))
+        print()
+        password=input("Enter Password To set : ")
+        for i in self.allBusiness:
+            if i.bid==id:
+                i.password=password
+                updatePasswordForManagerInDB(i)
+                break
+        
+        else:
+            print("Invalid Id")
         
 
     
