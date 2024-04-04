@@ -72,9 +72,10 @@ class Employees:
                     print("For All Employee Salary Incremented")
             elif choice=="4":
                 eid=int(input("Enter Employee ID : "))
-                incrementSalary=int(input("Enter Increment Salary Value : "))
+                
                 for i in self.employeesDetails:
                     if i.eid==eid:
+                        incrementSalary=int(input("Enter Increment Salary Value : "))
                         i.salary+=incrementSalary
                         print("Employee's Successfuly Salary Incremented...")
                         break

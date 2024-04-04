@@ -24,10 +24,10 @@ class Sales:
         
         for i in pdct.allProduct:
             
-            noOfProductSale=int(input("Pid "+str(i.pid)+" Name :" +i.name+" quantity sale : "))
+            noOfProductSale=int(input("Pid : "+str(i.pid)+" Name : " +i.name+" quantity sale : "))
             self.listOfProductsSale.append(self.Sale(i.pid,i.name,i.cost,i.revenue,noOfProductSale))
             # print(i.revenue)
-            self.totalRevenue+=(noOfProductSale*i.revenue)
+            self.totalRevenue+=(noOfProductSale*i.cost)
             self.COGS+=(noOfProductSale*(i.cost-i.revenue))
 
         return self.totalRevenue

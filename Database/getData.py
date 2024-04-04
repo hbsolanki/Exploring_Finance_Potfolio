@@ -23,7 +23,8 @@ def reStart():
     allBusinessForMain=[]
 
     for i in allBusiness:
-        # print(i)
+        print()
+        print(i["profit"])
         
         password=i["password"]
         bid=i["bid"]

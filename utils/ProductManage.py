@@ -20,7 +20,7 @@ class Products:
     def printAllProductDatails(self):
         # print("Eid  Name  designation   salary   Details")
         for i in self.allProduct:
-            print(i.pid,i.name,i.cost,i.revenue,i.x)
+            print("Pid :",i.pid,"Name :",i.name,"Cost",i.cost,"Revenue :",i.revenue,"Other :",i.x)
         
     def perProductRevenue(self):
         pass
@@ -76,18 +76,23 @@ class Products:
                 incrementPrice=int(input("Enter Increment Price : "))
                 
                 for i in self.allProduct:
+                    oldCost=i.cost
                     i.cost+=incrementPrice
+                    i.revenue=((i.cost*i.revenue)/oldCost)
                 else:
                     print("For All Product Price Incremented")
 
             elif choice=="4":
 
                 pid=int(input("Enter Product ID : "))
-                incrementPrice=int(input("Enter Increment Price : "))
+                
                 flag=False
                 for i in self.allProduct:
                     if i.pid==pid:
+                        incrementPrice=int(input("Enter Increment Price : "))
+                        oldCost=i.cost
                         i.cost+=incrementPrice
+                        i.revenue=((i.cost*i.revenue)/oldCost)
                         print("Product Price Incremented...")
                         flag=True
 

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from utils.EmployeeManage import Employees 
 from utils.ProductManage import Products
+
 from utils.SalesManage import Sales
 from utils.MonthDetails import Month
 import Database.CRUD as db
@@ -52,8 +53,8 @@ class Business:
 
 
     def viewChartForAnalysis(self):
-        choice=input("(1)UnitEconomics Pie-Chart (2)Sale (3)Employee ")
-        if choice=="1":
+        # choice=input("(1)UnitEconomics Pie-Chart  ")
+        # if choice=="1":
 
             activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
             semiChoice=input("(1)Last Month (2)Current Year (3)Last 3 year (4)Exit")
@@ -73,11 +74,14 @@ class Business:
             else:
                 print("invalid option try again...")
 
-        elif choice=="2":
-            pass
+        # elif choice=="2":
+        #     self.
 
-        else:
-            print("invalid option")
+        # elif choice=="3":
+        #     pass
+
+        # else:
+        #     print("invalid option")
 
 
     def chartsUnitEconomicsForLastMonth(self,activities):
@@ -85,7 +89,7 @@ class Business:
             if self.currentYearMonths:
                 m=self.currentYearMonths[len(self.currentYearMonths)-1]
 
-            else:
+            elif self.years:
                 m=self.years[len(self.years)-1][11]
 
             
@@ -359,6 +363,7 @@ class Business:
 
 
     def manager(self):
+        print()
         choice=None
         print("For Management Enter Number : ")
         
@@ -370,8 +375,11 @@ class Business:
             if choice=="1":
                 saleObj=Sales()
                 revenue=saleObj.saleInput(self.productObjectForBusiness)
+                print("Revenue :",revenue)
                 COGS=saleObj.COGS
+                print("COGS",COGS)
                 grossProfit=revenue-COGS
+                print("Gross Profit : ",grossProfit)
                 
                 debt=self.debt
                 haveEquity=self.haveEquity
@@ -384,19 +392,28 @@ class Business:
                 other=int(input("Enter Other Cost : "))
 
                 totalSalaries=self.employeeObjectForBusiness.allEmployeeSalaryTotal()
+                print("Total Salaries :",totalSalaries)
                 afterEMIProfit=self.currentDebtCalculation(grossProfit)
+                print("afterEMIProfit :",afterEMIProfit )
                 IncomeBeforeTaxes=afterEMIProfit-marketing-depreciation-other-totalSalaries
+                IncomeBeforeTaxes=afterEMIProfit-marketing-depreciation-other-totalSalaries
+                print("IncomeBeforetaxes :",)
 
                 totalTaxes=self.taxCalculation(IncomeBeforeTaxes)  
+                print("Total Taxes : ",totalTaxes)
                 
                 netProfit=IncomeBeforeTaxes-totalTaxes  
+                print("Net Profit : ",netProfit)
                 self.profit=(netProfit*self.haveEquity)/100
+                print("Profit : ",self.profit)
                 EBITDA=netProfit+depreciation+totalTaxes
+               
 
                 shareMarket=None
                 if self.debt["amount"] and debt["Total_EMI"]:
                     EBITDA+=debt["amount"]/debt["Total_EMI"]
 
+                print("EBITDA :",EBITDA)
                 m=Month(revenue,debt,haveEquity,EBITDA,assets,marketing,grossProfit,netProfit,totalSalaries,COGS,totalTaxes,other,saleObj,shareMarket)
                 
                 self.storeDetails(m)
@@ -433,7 +450,9 @@ class Business:
     def storeDetails(self,m):
         self.currentYearMonths.append(m)
         self.profit=(m.netProfit*m.haveEquity)/100
+        print("Profit :",self.profit)
         db.upateBusinessProfit(self)
+        print("profit Updated")
 
         if len(self.currentYearMonths)==12:
             self.years.append(self.currentYearMonths)
@@ -447,12 +466,17 @@ class Business:
 
 
     def currentDebtCalculation(self,grossProfit):
+
         if self.debt["Total_EMI"]!=self.debt["paidedEMI"]:
+            print(self.debt)
             emiPrice=self.debt["amount"]/self.debt["Total_EMI"]
             if emiPrice<grossProfit:
                 afterEMIProfit=grossProfit-emiPrice
                 self.debt={"amount":self.debt["amount"],"Total_EMI":self.debt["Total_EMI"],"paidedEMI":self.debt["paidedEMI"]+1,"persentage":self.debt["persentage"]}
+                print(self.debt)
+                db.updateBusinessDebt(self)
                 return afterEMIProfit
+            
             else:
                 return grossProfit
         else:

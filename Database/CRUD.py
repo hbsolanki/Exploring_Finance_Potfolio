@@ -34,7 +34,8 @@ def updateBusinessDebt(b):
     collection.update_one({"bid":b.bid},{"$set" :{"debt":{"amount":b.debt["amount"],"Total_EMI":b.debt["Total_EMI"],"paidedEMI":b.debt["paidedEMI"],"persentage":b.debt["persentage"]}}})
 
 def upateBusinessProfit(b):
-    collection.update_one({"bid":b.bid},{"$set" :{"profit":b.profit}})
+    d=collection.update_one({"bid":b.bid},{"$set" :{"profit":b.profit}})
+    print(d)
 
 def updateBusinessProductDetails(b):
     allProduct=[]
@@ -158,6 +159,9 @@ def getmonthDictionry(m):
 
     return monthDic
 
+
+def deleteBusiness(self,bid):
+    collection.delete_one({{"bid":bid}})
 
 def deleteEvery():
     collection.delete_many({})

@@ -1,6 +1,6 @@
 #1.some 2.sharemarket 3.marketing 4.product 5.employee
 from utils.Business import Business
-from Database.CRUD import insertInDB,updatePasswordForManagerInDB
+from Database.CRUD import insertInDB,updatePasswordForManagerInDB,deleteBusiness
 from Database.getData import reStart
 
 class Main:
@@ -57,7 +57,7 @@ class Main:
 
         while choice!="3":
             print()
-            choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Exit \n ")
+            choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Delete Business \n(5)Exit \n ")
 
             # try:
 
@@ -86,6 +86,16 @@ class Main:
                 self.addManager()
 
             elif choice=="4":
+                print()
+                print("Available Business :")
+                print()
+                for i in self.allBusiness:
+                    print("Bid :",i.bid,"Name :",i.name)
+
+                bid=int(input("Enter Business ID : "))
+                deleteBusiness(bid)
+
+            elif choice=="5":
                 break
 
             else:
@@ -106,8 +116,11 @@ class Main:
             if i.debt["Total_EMI"]:
                 totalDebt+=((i.debt["amount"]/i.debt["Total_EMI"])*(i.debt["Total_EMI"]-i.debt["paidedEMI"]))
 
+            if i.debt["Total_EMI"]==0 and i.debt["amount"]:
+                totalDebt+=i.debt["amount"]
+
         print("** From All Business Total Profit :",totalProfit,"₹")
-        print("** From All Business Debt Profit :",totalDebt,"₹")
+        print("** From All Business Total Debt :",round(totalDebt,2),"₹")
         print()
         print("(1)Create New Business (else)Exit")
         choice=input()
@@ -121,6 +134,7 @@ class Main:
                 haveEquity=int(input("You Have Equity : "))
                 assets=int(input("Enter Cost Of Assets : "))
                 b=Business("",bid,name)
+                print(b.productObjectForBusiness.allProduct)
                 b.haveEquity=haveEquity
                 b.assets=assets
                 ch=input("(1)Take Debt (2)Not Take Debt :")
@@ -129,8 +143,7 @@ class Main:
                     print("->Debt Details  ")
                     amount=int(input("Enter Amount : "))
                     b.debt["amount"]=amount
-                    chemi=input("(1)Converted Into EMI (2)Not Converted Into EMI")
-                    print("!")
+                    chemi=input("(1)Converted Into EMI (2)Not Converted Into EMI  : ")
                     if chemi=="1":
                         Total_EMI=int(input("Enter Total EMI Month : "))
                         
