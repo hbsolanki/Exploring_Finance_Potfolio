@@ -59,42 +59,42 @@ class Main:
             print()
             choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Exit \n ")
 
-            try:
+            # try:
 
-                if choice=="1":
+            if choice=="1":
 
-                    print()
-                    for i in self.allBusiness:
-                        print(i.bid,i.name)
-                    print()
-                    
-                    idForANA=int(input("Enter Business ID For Analysis : "))
-                    for i in self.allBusiness:
-                        if idForANA==i.bid:
-                            i.owner()
-                            break
-                    else:
-                        print("INVALID Business ID")
-                    
-                elif choice=="2":
-
-                    #Creating New Business and ADD All Business 
-                    print()
-                    self.newBusinessCreateAnalysis()
-
-                elif choice=="3":
-                    self.addManager()
-
-                elif choice=="4":
-                    break
-
+                print()
+                for i in self.allBusiness:
+                    print("Business ID :",i.bid,"Name :",i.name)
+                print()
+                
+                idForANA=int(input("Enter Business ID For Analysis : "))
+                for i in self.allBusiness:
+                    if idForANA==i.bid:
+                        i.owner()
+                        break
                 else:
-                    print("INVALID Option")
-                    self.owner()
+                    print("INVALID Business ID")
+                
+            elif choice=="2":
+
+                #Creating New Business and ADD All Business 
+                print()
+                self.newBusinessCreateAnalysis()
+
+            elif choice=="3":
+                self.addManager()
+
+            elif choice=="4":
+                break
+
+            else:
+                print("INVALID Option")
+                self.owner()
 
 
-            except:
-                    print("Error Occure")
+            # except:
+            #         print("Error Occure")
 
 
     def newBusinessCreateAnalysis(self):
@@ -103,7 +103,8 @@ class Main:
 
         for i in self.allBusiness:
             totalProfit+=i.profit
-            totalDebt+=((i.debt["amount"]/i.debt["Total_EMI"])*(i.debt["Total_EMI"]-i.debt["paidedEMI"]))
+            if i.debt["Total_EMI"]:
+                totalDebt+=((i.debt["amount"]/i.debt["Total_EMI"])*(i.debt["Total_EMI"]-i.debt["paidedEMI"]))
 
         print("** From All Business Total Profit :",totalProfit,"₹")
         print("** From All Business Debt Profit :",totalDebt,"₹")

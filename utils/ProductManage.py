@@ -1,4 +1,4 @@
-
+import matplotlib.pyplot as plt
 class Products:
     def __init__(self):
         pass
@@ -9,7 +9,7 @@ class Products:
             self.name=name
             self.cost=cost
             self.revenue=revenue
-            self.x=x
+            self.x=x    #x=Other Details
 
     allProduct=[]
     
@@ -41,7 +41,7 @@ class Products:
         choice=None
         while choice !="4":
             print()
-            choice=input("(1)Add Product \n(2)Remove Product \n(3)Increment All Product Price \n(4)Increment Price Particular Product \n(5)View All Product Details \n(6)View Particular Product Details \n(7)Exit \n")
+            choice=input("(1)Add Product \n(2)Remove Product \n(3)Increment All Product Price \n(4)Increment Price Particular Product \n(5)View All Product Details \n(6)View Particular Product Details \n(7)Chart For Cost Of All Product \n(8)Chart For Revenue of All Product \n(9)Exit \n")
             
             if (choice in ["2","3","4","5","6"]) and (not self.allProduct):
                 print("Product List Is Empty")
@@ -62,12 +62,13 @@ class Products:
             elif choice=="2":
 
                 pid=int(input("Enter Product ID : "))
+                flag=False
                 for i in self.allProduct:
                     if i.pid==pid:
                         self.allProduct.remove(i)
                         print("Product Successfuly Removed...")
-                        break
-                else:
+                        flag=True
+                if flag:
                     print("This Product ID Not Found...")
 
             elif choice=="3":
@@ -83,12 +84,15 @@ class Products:
 
                 pid=int(input("Enter Product ID : "))
                 incrementPrice=int(input("Enter Increment Price : "))
+                flag=False
                 for i in self.allProduct:
                     if i.pid==pid:
                         i.cost+=incrementPrice
                         print("Product Price Incremented...")
+                        flag=True
+
                         
-                else:
+                if not flag:
                     print("This Product ID Not Found...")
 
             elif choice=="5":
@@ -106,8 +110,37 @@ class Products:
                     print("This Product ID Not Found...")
 
             elif choice=="7":
+                
+                name=[]
+                cost=[]
+                for i in self.allProduct:
+                    name.append(i.name)
+                    cost.append(i.cost)
+
+                plt.subplot(1,2,1)
+                plt.pie(cost,labels=name,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+                plt.subplot(1,2,2)
+                plt.bar(name,cost)
+                plt.legend()
+                plt.show()
+
+            elif choice=="8":
+                
+                name=[]
+                reven=[]
+                for i in self.allProduct:
+                    name.append(i.name)
+                    reven.append(i.revenue)
+
+                plt.subplot(1,2,1)
+                plt.pie(reven,labels=name,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+                plt.subplot(1,2,2)
+                plt.bar(name,reven)
+                plt.legend()
+                plt.show()
+
+            elif choice=="9":
                 break
             else:
                 print("Invalid Option")
             
-

@@ -33,6 +33,8 @@ def updateBusinessAssets(b):
 def updateBusinessDebt(b):
     collection.update_one({"bid":b.bid},{"$set" :{"debt":{"amount":b.debt["amount"],"Total_EMI":b.debt["Total_EMI"],"paidedEMI":b.debt["paidedEMI"],"persentage":b.debt["persentage"]}}})
 
+def upateBusinessProfit(b):
+    collection.update_one({"bid":b.bid},{"$set" :{"profit":b.profit}})
 
 def updateBusinessProductDetails(b):
     allProduct=[]

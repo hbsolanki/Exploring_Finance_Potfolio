@@ -1,16 +1,21 @@
-            *-* Apple *-*
---> Current Year : 
+            *-* Samsung *-*
+--> Current Month : 
 
 
-Profit : 729918.0 
+haveEquity : 100 
+assets : 100000000 
+Profit : 116487.0 
 
-Revenue : 4200000 
-COGS : 3000000 
-Gross Profit : 1200000 
-Marketing : 11100 
-Salaries To Employees : 30000 
-Taxes : 428682.0 
-Other : 300 
+Revenue : 1020000 
+COGS : 720000 
+Gross Profit : 300000 
+•Dept : amount= 5000000 month left = 12 Persentage = 0 
+Marketing : 10000 
+Salaries To Employees : 104000 
+Taxes : 68413.0 
+Other : 100 
 
-Net Profit : 729918.0 
-EBITDA : 1158600.0 
+Net Profit : 116487.0 
+EBITDA : 602566.6666666667 
+
+Annual Revenue Run Rate : 12240000.0 

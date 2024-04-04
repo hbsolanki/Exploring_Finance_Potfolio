@@ -18,12 +18,13 @@ collection=db["business"]
 def getFromDB():
     return collection.find()
 
-
 def reStart():
     allBusiness=getFromDB()
     allBusinessForMain=[]
 
     for i in allBusiness:
+        # print(i)
+        
         password=i["password"]
         bid=i["bid"]
         name=i["name"]
@@ -46,6 +47,7 @@ def reStart():
         
 
         b=Business(password,bid,name)
+        b.profit=i["profit"]
         b.debt=debt
         b.haveEquity=haveEquity
         b.assets=assets

@@ -1,4 +1,4 @@
-import numpy as np
+import matplotlib.pyplot as plt
 
 class Sales:
 
@@ -12,7 +12,7 @@ class Sales:
 
     listOfProductsSale=[]
     totalRevenue=0
-    COGS=0
+    COGS=0   #Cost Of Goods sold
 
 
 
@@ -24,35 +24,56 @@ class Sales:
         
         for i in pdct.allProduct:
             
-            noOfProductSale=int(input(str(i.pid)+" " +i.name+" quantity sale : "))
+            noOfProductSale=int(input("Pid "+str(i.pid)+" Name :" +i.name+" quantity sale : "))
             self.listOfProductsSale.append(self.Sale(i.pid,i.name,i.cost,i.revenue,noOfProductSale))
             # print(i.revenue)
-            self.totalRevenue+=(noOfProductSale*i.cost)
+            self.totalRevenue+=(noOfProductSale*i.revenue)
             self.COGS+=(noOfProductSale*(i.cost-i.revenue))
 
         return self.totalRevenue
     
 
     def viewSaleDetails(self):
-        choice=input("(1)View All Product Sale (2)View Particular Product Sale")
+        choice=None
 
-        if choice=="1":
-            self.viewAllProductSale()
+        while choice!=4:
+            choice=input("(1)View All Product Sale (2)View Particular Product Sale (3)Chart For All Product Quantity (4)Exit \n")
 
-        elif choice=="2":
-            pid=int(input("Enter Product Id : "))
-            for i in self.listOfProductsSale:
-                if i.pid==pid:
-                    print((i.pid,i.name,i.cost,i.revenue,i.noOfProductSale))
-                    print()
-        
-        else:
-            print("Invalid Option try again...")
+            if choice=="1":
+                self.viewAllProductSale()
+
+            elif choice=="2":
+                pid=int(input("Enter Product Id : "))
+                for i in self.listOfProductsSale:
+                    if i.pid==pid:
+                        print((i.pid,i.name,i.cost,i.revenue,i.quantity))
+                        print()
+
+            elif choice=="3":
+                
+                name=[]
+                quan=[]
+                for i in self.listOfProductsSale:
+                    name.append(i.name)
+                    quan.append(i.quantity)
+
+                plt.subplot(1,2,1)
+                plt.pie(quan,labels=name,startangle=90,shadow=True,radius=1.2,autopct='%1.2f%%')
+                plt.subplot(1,2,2)
+                plt.bar(name,quan)
+                plt.legend()
+                plt.show()
+
+            elif choice=="4":
+                break
+            
+            else:
+                print("Invalid Option try again...")
 
 
     def viewAllProductSale(self):
+        print()
         for i in self.listOfProductsSale:
-            print((i.pid,i.name,i.cost,i.revenue,i.noOfProductSale))
+            print("Pid :",i.pid," Name :",i.name," Cost :",i.cost," Revenue :",i.revenue," Quantity :",i.quantity)
             print()
         
-    

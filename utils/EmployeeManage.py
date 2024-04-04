@@ -1,5 +1,4 @@
 
-
 class Employees:
 
     class Employee:
@@ -8,7 +7,7 @@ class Employees:
             self.name=name
             self.designation=designation
             self.salary=salary
-            self.x=x
+            self.x=x    #x=Other Details
 
     employeesDetails=[]
     
@@ -27,7 +26,7 @@ class Employees:
     def printAllEmployeeDatails(self):
         # print("Eid  Name  designation   salary   Details")
         for i in self.employeesDetails:
-            print(i.eid,i.name,i.designation,i.salary,i.x)
+            print("Eid :",i.eid,"Name :",i.name,"Designation :",i.designation,"Salary :",i.salary,"Other :",i.x)
 
     def copyEmployee(self,e2):
         for i in e2.employeesDetails:
@@ -56,12 +55,14 @@ class Employees:
 
             elif choice=="2":
                 eid=int(input("Enter Employee ID : "))
+                flag=False
                 for i in self.employeesDetails:
                     if i.eid==eid:
                         self.employeesDetails.remove(i)
                         print("Employee Successfuly Removed...")
-                        break
-                else:
+                        flag=True
+                        
+                if not flag:
                     print("This Employee ID Not Found...")
             elif choice=="3":
                 incrementSalary=int(input("Enter Increment Salary Value : "))
@@ -76,19 +77,20 @@ class Employees:
                     if i.eid==eid:
                         i.salary+=incrementSalary
                         print("Employee's Successfuly Salary Incremented...")
-                        
+                        break
                 else:
                     print("This Employee ID Not Found...")
             elif choice=="5":
                 self.printAllEmployeeDatails()
             elif choice=="6":
                 eid=int(input("Enter Employee ID : "))
+                flag=False
                 for i in self.employeesDetails:
                     if i.eid==eid:
-                        print(i.eid,i.name,i.designation,i.salary,i.x)
-                        break
+                        print("Eid :",i.eid,"Name :",i.name,"Designation :",i.designation,"Salary :",i.salary,"Other :",i.x)
+                        flag=True
                         
-                else:
+                if not flag:
                     print("This Employee ID Not Found...")
             elif choice=="7":
                 break

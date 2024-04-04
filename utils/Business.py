@@ -16,7 +16,7 @@ class Business:
         self.assets=0
         self.currentYearMonths=[]
         self.years=[]
-        self.profit=0
+        self.profit=0   #Last Month Profit
         self.annualRevenueRunRate=0
         self.currentYearRevenue=0
         self.productObjectForBusiness=Products()
@@ -56,7 +56,7 @@ class Business:
         if choice=="1":
 
             activities=["COGS","Commissions,Logistics Packaging & Other","Performance Marketing","Salaries & Rent","EBITDA"]
-            semiChoice=input("(1)Last Month (2)Current Year (3)Last 3 year")
+            semiChoice=input("(1)Last Month (2)Current Year (3)Last 3 year (4)Exit")
 
             if semiChoice=="1":
                 self.chartsUnitEconomicsForLastMonth(activities)
@@ -66,6 +66,9 @@ class Business:
             
             elif semiChoice=="3":
                 self.chartsUnitEconomicsForLastYear(activities)
+
+            elif semiChoice=="4":
+                print("HElli")
 
             else:
                 print("invalid option try again...")
@@ -144,7 +147,7 @@ class Business:
             print()
             print("haveEquity :",m.haveEquity)
             print("assets :",m.assets)
-            print("Profit :",self.profit)
+            print("Profit :",(m.netProfit*m.haveEquity)/100)
             print()
             print("Revenue :",m.revenue)
 
@@ -429,6 +432,8 @@ class Business:
 
     def storeDetails(self,m):
         self.currentYearMonths.append(m)
+        self.profit=(m.netProfit*m.haveEquity)/100
+        db.upateBusinessProfit(self)
 
         if len(self.currentYearMonths)==12:
             self.years.append(self.currentYearMonths)
@@ -469,16 +474,23 @@ class Business:
 
         
     def viewSaleDetails(self):
-        choice=input("(1)Last Month (2)Current Year (3)Last 3 year")
+        choice=input("(1)Last Month (2)Current Year")
 
         if choice=="1":
-            pass
+            m=None
+            if self.currentYearMonths:
+                m=self.currentYearMonths[len(self.currentYearMonths)-1]
+
+            elif self.years:
+                m=self.years[len(self.years)-1][11]
+
+            m.sales.viewSaleDetails()
 
         elif choice=="2":
-            pass
+            if self.currentYearMonths:
+                for i in self.currentYearMonths:
+                    i.sales.viewAllProductSale()
         
-        elif choice=="3":
-            pass
         
         else:
             print("invalid option try again...")
