@@ -1,10 +1,10 @@
 import pymongo
 
-from utils.ProductManage import Products
-from utils.SalesManage import Sales
+from utils.Management.ProductManage import Products
+from utils.Management.SalesManage import Sales
 from utils.MonthDetails import Month
 from utils.Business import Business
-from utils.EmployeeManage import Employees 
+from utils.Management.EmployeeManage import Employees 
 
 
 #Connection With Database
@@ -23,9 +23,6 @@ def reStart():
     allBusinessForMain=[]
 
     for i in allBusiness:
-        print()
-        print(i["profit"])
-        
         password=i["password"]
         bid=i["bid"]
         name=i["name"]

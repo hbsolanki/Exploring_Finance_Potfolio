@@ -1,18 +1,11 @@
+from Model.Management.Employee import Employee
 
 class Employees:
-
-    class Employee:
-        def __init__(self,eid,name,designation,salary,x):
-            self.eid=eid
-            self.name=name
-            self.designation=designation
-            self.salary=salary
-            self.x=x    #x=Other Details
 
     employeesDetails=[]
     
     def addEmployee(self,eid,name,designation,salary,x):
-        self.employeesDetails.append(self.Employee(eid,name,designation,salary,x))
+        self.employeesDetails.append(Employee(eid,name,designation,salary,x))
     
     def allEmployeeSalaryTotal(self):
         totalSalary=0

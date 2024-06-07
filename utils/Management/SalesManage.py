@@ -1,23 +1,14 @@
+from Model.Management.Sale import Sale 
 import matplotlib.pyplot as plt
 
 class Sales:
-
-    class Sale:
-        def __init__(self,pid,name,cost,revenue,quantity):
-            self.pid=pid
-            self.name=name
-            self.cost=cost
-            self.revenue=revenue
-            self.quantity=quantity
 
     listOfProductsSale=[]
     totalRevenue=0
     COGS=0   #Cost Of Goods sold
 
-
-
     def productSaleAdd(self,pid,name,cost,revenue,noOfProductSale):
-        self.listOfProductsSale.append(self.Sale(pid,name,cost,revenue,noOfProductSale))
+        self.listOfProductsSale.append(Sale(pid,name,cost,revenue,noOfProductSale))
 
 
     def saleInput(self,pdct): 

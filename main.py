@@ -1,8 +1,7 @@
 #1.some 2.sharemarket 3.marketing 4.product 5.employee
-from utils.Business import Business
+from utils import Business
 from Database.CRUD import insertInDB,updatePasswordForManagerInDB,deleteBusiness
 from Database.getData import reStart
-
 class Main:
 
     def __init__(self,password):
@@ -10,13 +9,11 @@ class Main:
         self.ownerPass=password
 
 
-    def mainFunc(self):
+    def mainFunction(self):
         #getting Data From Database
         self.allBusiness=reStart()
 
         choice=None
-        
-
         while choice!="3":
             print()
             choice=input("(1)Owner \n(2)Manager \n(3)Exit \n")
@@ -24,7 +21,7 @@ class Main:
             if choice=="1":
                 password=input("Enter Password : ")
                 if self.ownerPass==password:
-                    self.owner()
+                    self.ownerMainFunction()
                 else:
                     print("Wrong password Try Again...")
 
@@ -52,15 +49,14 @@ class Main:
                 print("Invalid Option")
 
         
-    def owner(self):
+    def ownerMainFunction(self):
         choice=None
 
         while choice!="3":
             print()
             choice=input("(1)Analysis Business \n(2)Create Business \n(3)Add Manager For Particular Business \n(4)Delete Business \n(5)Exit \n ")
 
-            # try:
-
+        
             if choice=="1":
 
                 print()
@@ -80,10 +76,10 @@ class Main:
 
                 #Creating New Business and ADD All Business 
                 print()
-                self.newBusinessCreateAnalysis()
+                self.createNewBusiness()
 
             elif choice=="3":
-                self.addManager()
+                self.addManagerForBusiness()
 
             elif choice=="4":
                 print()
@@ -103,11 +99,8 @@ class Main:
                 self.owner()
 
 
-            # except:
-            #         print("Error Occure")
 
-
-    def newBusinessCreateAnalysis(self):
+    def createNewBusiness(self):
         totalProfit=0
         totalDebt=0
 
@@ -134,7 +127,6 @@ class Main:
                 haveEquity=int(input("You Have Equity : "))
                 assets=int(input("Enter Cost Of Assets : "))
                 b=Business("",bid,name)
-                print(b.productObjectForBusiness.allProduct)
                 b.haveEquity=haveEquity
                 b.assets=assets
                 ch=input("(1)Take Debt (2)Not Take Debt :")
@@ -166,7 +158,7 @@ class Main:
         else:
             return
         
-    def addManager(self):
+    def addManagerForBusiness(self):
         id=int(input("Enter Bussiness id : "))
         print()
         password=input("Enter Password To set : ")
@@ -182,4 +174,4 @@ class Main:
 
     
 #Creating Main Object
-Main("hb").mainFunc()
+Main("hb").mainFunction()

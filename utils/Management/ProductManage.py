@@ -1,20 +1,15 @@
+from Model.Management.Product import Product
 import matplotlib.pyplot as plt
+
 class Products:
     def __init__(self):
         pass
 
-    class Product:
-        def __init__(self,pid,name,cost,revenue,x):
-            self.pid=pid
-            self.name=name
-            self.cost=cost
-            self.revenue=revenue
-            self.x=x    #x=Other Details
-
+    
     allProduct=[]
     
     def addProduct(self,pid,name,cost,revenue,x):
-        p=self.Product(pid,name,cost,revenue,x)
+        p=Product(pid,name,cost,revenue,x)
         self.allProduct.append(p)
 
     def printAllProductDatails(self):
